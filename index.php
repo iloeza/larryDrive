@@ -1,31 +1,24 @@
 <?php
-require __DIR__.'/Vistas/partials/layout_head.php';
-//require __DIR__.'/Routes/routes.php';
-//$router = new \Bramus\Router\Router();
+require 'Modelos/db.php';  //LarryDrive#1
+$controller = 'login';
 
-//Rutas del sitio
-//Middleware para veriricar si el usuario esta loggeado
-//$router->before('GET|POST', '/.*', function() {
-//    if (!isset($_SESSION['user'])) {
-//		include(__DIR__.'/Vistas/welcome.php');
-//   }
-//});
-
-//$router->get('/sign-in', function () {
-//	include(__DIR__.'/Vistas/login.php');
-//});
-
-//$router->run();
-
-if (! isset($_SESSION['loggedin']) && $_SESSION['loggedin']){
-
+// Todo esta lógica hara el papel de un FrontController
+if(!isset($_REQUEST['c'])) {
+    require_once "Controladores/{$controller}_controller.php";
+    $controller = ucwords($controller) . 'Controller';
+    $controller = new $controller;
+    $controller->Index();  
 } else {
-	include(__DIR__.'/Vistas/welcome.php');
-} 
+    // Obtenemos el controlador que queremos cargar
+    $controller = strtolower($_REQUEST['c']);
+    $accion = isset($_REQUEST['a']) ? $_REQUEST['a'] : 'Index';
 
+    // Instanciamos el controlador
+    require_once "Controladores/{$controller}_controller.php";
+    $controller = ucwords($controller) . 'Controller';
+    $controller = new $controller;
 
-
-require __DIR__.'/Vistas/partials/layout_footer.html';
-?>
-
+    // Llama la accion
+    call_user_func( array( $controller, $accion ) );
+}
 
