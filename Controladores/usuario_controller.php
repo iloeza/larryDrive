@@ -18,8 +18,12 @@ class UsuarioController {
 		$nuevo_usuario->password = $_POST['password'];
 
 		try {
-			$this->usuario->Crear($nuevo_usuario);
-			Controlador::redirect("Usuario creado correctamente, prueba iniciando sesion");
+			if(! $this->usuario->Crear($nuevo_usuario)){
+				Controlador::redirect("Ya existe un usuario con ese nombre, intenta con uno diferente", '?c=signin');		
+			} else {
+				Controlador::redirect("Usuario creado correctamente, prueba iniciando sesion");
+			}
+
 		} catch(Exception $e) {
 			echo 'Error al crear usuario: ' . $e->getMessage();
 		} 

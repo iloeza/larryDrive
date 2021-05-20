@@ -25,6 +25,14 @@ class Usuario {
 	public function Crear(Usuario $usuario){
 		$username = $usuario->username;
 		$password = $usuario->password;
+		try {
+			$get_usuarios = $this->get_usuario($usuario);
+			if ($get_usuarios->num_rows >= 1) {
+				return false; //Regresamos false si ya existe el usuario con ese nombre en la bd
+			}
+		} catch (Exception $e){
+			echo $e->getMessage();
+		}
 
 		$sql = $this->conn->prepare("INSERT INTO Usuarios (username, password) VALUES (?, ?)");
 		$sql->bind_param("ss", $username, $password);
@@ -33,6 +41,7 @@ class Usuario {
 			throw new Exception("Error insertando los datos en la bd");
 		}
 		$sql->close();
+		return true; //Regresamos un true si no hubo usuarios repetidos ni errores
 	}
 
 	public function get_usuario(Usuario $usuario){
