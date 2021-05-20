@@ -1,12 +1,17 @@
 <?php
 
 class Db {
-
 	public function Conn (){
 		$server = "localhost";
-		$user = "root";
-		$pass = "LarryDrive#1";
-		$db = "larrydrive";
+		if($_SERVER['HTTP_HOST'] != 'localhost'){
+			$user = "id16836596_root";
+			$pass = "Admin-Admin123";
+			$db = "id16836596_larrydrive";
+		} else {
+			$user = "root";
+			$pass = "LarryDrive#1";
+			$db = "larrydrive";
+		}
 
 		//Conexion a la bd
 		$conn = new mysqli($server, $user, $pass, $db);
