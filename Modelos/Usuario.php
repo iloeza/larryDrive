@@ -41,6 +41,7 @@ class Usuario {
 			throw new Exception("Error insertando los datos en la bd");
 		}
 		$sql->close();
+		return true; //Regresamos true si no hubo duplicados y se creo correctamente el usuario
 	}
 
 	public function get_usuario(Usuario $usuario){
