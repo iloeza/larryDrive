@@ -23,7 +23,6 @@ class UsuarioController {
 			} else {
 				Controlador::redirect("Usuario creado correctamente, prueba iniciando sesion");
 			}
-
 		} catch(Exception $e) {
 			echo 'Error al crear usuario: ' . $e->getMessage();
 		} 
