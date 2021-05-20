@@ -1,5 +1,6 @@
 <?php
 require 'Modelos/db.php';  //LarryDrive#1
+require 'Controladores/controlador.php';
 $controller = 'login';
 
 // Todo esta lógica hara el papel de un FrontController

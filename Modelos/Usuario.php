@@ -23,14 +23,29 @@ class Usuario {
 	}
 
 	public function Crear(Usuario $usuario){
-	
+		$username = $usuario->username;
+		$password = $usuario->password;
+
 		$sql = $this->conn->prepare("INSERT INTO Usuarios (username, password) VALUES (?, ?)");
 		$sql->bind_param("ss", $username, $password);
 
-		$username = $usuario->username;
-		$password = $usuario->password;
 		if (! $sql->execute()){
-			echo "Error insertando los datos en la bd";
+			throw new Exception("Error insertando los datos en la bd");
+		}
+		$sql->close();
+	}
+
+	public function get_usuario(Usuario $usuario){
+		$username = $usuario->username;
+
+		$sql = $this->conn->prepare("SELECT username, password FROM Usuarios WHERE username = ?");
+		$sql->bind_param("s", $username);
+		
+		if (! $sql->execute()){
+			throw new Exception("Error obteniendo los datos del usuario");
+		} else {
+			$get_resultados = $sql->get_result();
+			return $get_resultados;
 		}
 		$sql->close();
 	}

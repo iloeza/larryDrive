@@ -1,4 +1,5 @@
 <?php
+require_once'Modelos/Usuario.php';
 
 class LoginController {
 
@@ -7,4 +8,6 @@ class LoginController {
 		require_once 'Vistas/login.php';
 		require_once 'Vistas/partials/layout_footer.html';
 	}
+	
+
 }

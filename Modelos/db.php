@@ -1,4 +1,5 @@
 <?php
+
 class Db {
 
 	public function Conn (){
