@@ -1,5 +1,5 @@
 <div class="container text-center login__form">
-	<h2>Inicia sesión en Larry Drive</h2>
+	<h2>Inicia sesión en FastDrive</h2>
     <form action='?c=usuario&a=login' method="POST">
         <div class="form-group">
 	    <label for="userName">Usuario</label>

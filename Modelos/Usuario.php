@@ -47,7 +47,7 @@ class Usuario {
 	public function get_usuario(Usuario $usuario){
 		$username = $usuario->username;
 
-		$sql = $this->conn->prepare("SELECT username, password FROM Usuarios WHERE username = ?");
+		$sql = $this->conn->prepare("SELECT id, username, password FROM Usuarios WHERE username = ?");
 		$sql->bind_param("s", $username);
 		
 		if (! $sql->execute()){
