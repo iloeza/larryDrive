@@ -18,10 +18,6 @@ class ArchivoController {
   		$file_type=$_FILES["file"]["type"];
  		$file_tmpName=$_FILES["file"]["tmp_name"];  
 
-		if(! isset($_POST["SubmitBtn"])){
-			throw new Exception("Error en el formulario");
-		}
-
 		if (! file_exists($user_dir)) {
    	 		if(! mkdir($user_dir, 0777)){
 				throw new Exception("Error creado el directorio del usuario");
@@ -37,7 +33,30 @@ class ArchivoController {
 		} catch(Exception $e){
 			echo $e->getMessage();
 		}
+		echo "<img src='$user_dir/$file_name' />";
   	}		
+
+	public function GetArchivos(){
+		
+		$req = $_REQUEST['new_dir'];
+		$base_dir = "Storage/{$_SESSION['username']}";
+		if ($req !== $_SESSION['last_dir']){
+			$_SESSION['last_dir'] = $req;
+			$_SESSION['dir'] = "{$_SESSION['dir']}/$req";
+		}
+		$dir = $base_dir.$_SESSION['dir'];
+		echo nl2br ("{$_SESSION['dir']} \n $dir");
+		exit;
+		//if (is_dir($dir)){
+  		//	if ($dh = opendir($dir)){
+    	//		while (($file = readdir($dh)) !== false){
+      	//			echo "filename:" . $file . "<br>";
+    			}
+    	//		closedir($dh);
+  		//	}		
+		//}	
+
+
+	}
  
-}
 

@@ -41,6 +41,8 @@ class UsuarioController {
 				//session_start();
 				$_SESSION['username'] = $info_usuario['username'];
 				$_SESSION['id'] = $info_usuario['id'];
+				$_SESSION['dir'] = "";
+				$_SESSION['last_dir'] = "";
 				Controlador::redirect("Inicio de sesion correcto", "?c=usuario&a=home"); 
 			} else {
 				Controlador::redirect("Credenciales incorrectas, verifiquelas e intente nuevamente");
