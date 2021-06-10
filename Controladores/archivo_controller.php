@@ -33,30 +33,41 @@ class ArchivoController {
 		} catch(Exception $e){
 			echo $e->getMessage();
 		}
-		echo "<img src='$user_dir/$file_name' />";
+		
+		$files = $this->GetArchivos();
+		$result = "";
+		foreach($files as $k => $v){
+			$result .= "<a href='{$v['Ruta']}'>{$v['NombreArchivo']}</a><br>";
+		}
+		echo $result;
   	}		
 
 	public function GetArchivos(){
 		
-		$req = $_REQUEST['new_dir'];
+		//$req = $_REQUEST['new_dir'];
 		$base_dir = "Storage/{$_SESSION['username']}";
-		if ($req !== $_SESSION['last_dir']){
-			$_SESSION['last_dir'] = $req;
-			$_SESSION['dir'] = "{$_SESSION['dir']}/$req";
-		}
-		$dir = $base_dir.$_SESSION['dir'];
-		echo nl2br ("{$_SESSION['dir']} \n $dir");
-		exit;
-		//if (is_dir($dir)){
-  		//	if ($dh = opendir($dir)){
-    	//		while (($file = readdir($dh)) !== false){
-      	//			echo "filename:" . $file . "<br>";
+		$files = [];
+		//if ($req !== $_SESSION['last_dir']){
+		//	$_SESSION['last_dir'] = $req;
+		//	$_SESSION['dir'] = "{$_SESSION['dir']}/$req";
+		//}
+		//$dir = $base_dir.$_SESSION['dir'];
+		//echo nl2br ("{$_SESSION['dir']} \n $dir");
+		//echo getcwd();
+		//chdir("Storage/ivan");
+		//chdir("..");
+		//echo getcwd();
+		if (is_dir($base_dir)){
+  			if ($dh = opendir($base_dir)){
+    			while (($file = readdir($dh)) !== false){
+      				$files[] = array(
+						"NombreArchivo" => $file,
+						"Ruta" =>  $base_dir."/".$file
+					);
     			}
-    	//		closedir($dh);
-  		//	}		
-		//}	
-
-
+    			closedir($dh);
+  			}		
+		}	
+		return $files;
 	}
- 
-
+}

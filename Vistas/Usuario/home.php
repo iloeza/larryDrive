@@ -13,8 +13,8 @@
 		<input type="file" name="file" id="file">
 		<input type="submit" name="SubmitBtn" id="SubmitBtn" value="Subir archivo">
 	</form>	
- 
-<div id="preview"></div><br> 
-<div id="err"></div><br> 
+	<div id="data">
+		
+	</div>	
 </div>
 
