@@ -1,5 +1,7 @@
-.home {}
-
 .home__navbar {
 	justify-content: flex-end;
+}
+
+.getDir {
+	cursor: pointer;
 }

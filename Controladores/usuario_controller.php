@@ -52,6 +52,12 @@ class UsuarioController {
 		}
 	}
 
+	public function logout(){
+		session_destroy();
+		Controlador::redirect("Sesion terminada");
+
+	}
+
 	public function home(){
 		require_once 'Vistas/Usuario/home.php';
 	}

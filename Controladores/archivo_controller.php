@@ -10,7 +10,11 @@ class ArchivoController {
 	public function __CONSTRUCT(){
 		$this->archivo = new Archivo();
 		$rutas = implode("/", $_SESSION['ruta']);
- 		$this->current_dir = "Storage/{$_SESSION['username']}/$rutas";
+ 		$this->current_dir = $rutas == "" ? "Storage/{$_SESSION['username']}$rutas" : "Storage/{$_SESSION['username']}/$rutas";
+
+		 if (! is_dir("Storage/{$_SESSION['username']}")){
+			mkdir("Storage/{$_SESSION['username']}", 0777);
+		 }
 	}
 
 	public function SubirArchivo(){
@@ -19,8 +23,10 @@ class ArchivoController {
   		$file_size=$_FILES["file"]["size"]/1024;
   		$file_type=$_FILES["file"]["type"];
  		$file_tmpName=$_FILES["file"]["tmp_name"];  
+		 echo $this->current_dir;
 
 		if (! file_exists($this->current_dir)) {
+			exit;
    	 		if(! mkdir($this->current_dir, 0777)){
 				throw new Exception("Error creado el directorio del usuario");
 			}
@@ -35,17 +41,14 @@ class ArchivoController {
 		} catch(Exception $e){
 			echo $e->getMessage();
 		}
-		
-		$files = $this->GetArchivos();
-		echo $files;
   	}		
 
 	public function GetArchivos(){
 		
-		//$req = $_REQUEST['new_dir'];
-		$files = [];
-		$dirs = [];
-		$result = "";
+		$arr = array (
+			"files" => array(),
+			"dirs" => array()
+		);
 		if (is_dir($this->current_dir)){
   			if ($dh = opendir($this->current_dir)){
     			while (($file = readdir($dh)) !== false){
@@ -53,12 +56,12 @@ class ArchivoController {
 						continue;
 					}
 					else if (is_dir($this->current_dir.'/'.$file)){
-						$dirs[] = array(
+						$arr['dirs'][] = array(
 							"NombreDir" => $file,
 							"Ruta" => $this->current_dir.$file
 						);
 					} else {
-						$files[] = array(
+						$arr['files'][] = array(
 							"NombreArchivo" => $file,
 							"Ruta" =>  $this->current_dir."/".$file
 						);
@@ -67,25 +70,14 @@ class ArchivoController {
     			closedir($dh);
   			}		
 		}
-
-		$result .= "<div> <h2>Archivos</h2>";
-		foreach($files as $k => $v){
-			$result .= "<a href='{$v['Ruta']}' download>{$v['NombreArchivo']}</a><br>";
-		}
-		$result .= "</div>";
-
-		$result .= "<div> <h2>Carpetas</h2>";
-		foreach($dirs as $k => $v){
-			$result .= "<p class='getDir'>{$v['NombreDir']}</p><br>";
-		}
-		$result .= "</div>";
-		return $result;
+		return $arr;
 	}
 
 	public function crearDirectorio(){
 		$dir_name = (isset($_POST['dirname']) && $_POST['dirname'] !== "") ? $_POST['dirname'] : "";
 		if ($dir_name !== ""){
 			$nuevo_dir = $this->current_dir."/".$dir_name;
+			$nuevo_dir = preg_replace('/\s+/', '', $nuevo_dir);
 			if(! mkdir($nuevo_dir, 0777)){
 				throw new Exception("Error creado el directorio del usuario");
 			}
@@ -109,6 +101,4 @@ class ArchivoController {
 			}
 		}
 	}
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'Modelos/db.php';  //LarryDrive#1
 require 'Controladores/controlador.php';
 require_once 'Vistas/partials/layout_head.php';
@@ -10,8 +11,8 @@ if($controller_request !== 'login') {
     // Obtenemos el controlador que queremos cargar
     $accion = isset($_REQUEST['a']) ? $_REQUEST['a'] : 'Index';
     // Llama la accion
-	session_start();
-	if(((isset($_SESSION['id']) && $_SESSION['id'] != '') || $controller_request == 'signin' || $accion == 'login' || $accion == 'crear') && $accion !== 'descargarArchivo'){
+
+	if((isset($_SESSION['id']) && $_SESSION['id'] != '') || $controller_request == 'signin' || $accion == 'login' || $accion == 'crear'){
 
 		// Instanciamos el controlador
 		require_once "Controladores/{$controller_request}_controller.php";
@@ -20,10 +21,6 @@ if($controller_request !== 'login') {
 
     	call_user_func( array( $controller, $accion ) );
 
-	} else if($accion == 'descargarArchivo') {
-		require_once('descargar_archivo.php');
-		descargarArchivo();
-		exit(0);
 	} else {
 		Controlador::redirect("Necesitas loggearte para ver esta pagina");
 	}
