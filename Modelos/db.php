@@ -4,9 +4,9 @@ class Db {
 	public function Conn (){
 		$server = "localhost";
 		if($_SERVER['HTTP_HOST'] != 'localhost'){
-			$user = "id16836596_root";
-			$pass = "Admin-Admin123";
-			$db = "id16836596_larrydrive";
+			$user = "id17032082_uppuser";
+			$pass = "|oDZ9{o!]VsrnNy-";
+			$db = "id17032082_fastdrive";
 		} else {
 			$user = "root";
 			$pass = "LarryDrive#1";

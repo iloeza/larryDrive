@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>LarryDrive</title>
+    <title>FastDrive</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -9,6 +9,8 @@
 
     <!-- App CSS -->
     <link rel="stylesheet" href="/Public/css.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/Public/js.js"></script>
 
 </head>
 <body>

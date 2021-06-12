@@ -38,9 +38,11 @@ class UsuarioController {
 			$qry = $this->usuario->get_usuario($get_usuario);
 			$info_usuario = $qry->fetch_assoc();
 			if ($info_usuario['password'] === $get_usuario->password){
-				session_start();
-				$_SESSION['username'] = $get_usuario->username;
-				Controlador::redirect("Inicio de sesion correcto"); 
+				//session_start();
+				$_SESSION['username'] = $info_usuario['username'];
+				$_SESSION['id'] = $info_usuario['id'];
+				$_SESSION['ruta'] = [];
+				Controlador::redirect("Inicio de sesion correcto", "?c=usuario&a=home"); 
 			} else {
 				Controlador::redirect("Credenciales incorrectas, verifiquelas e intente nuevamente");
 			}
@@ -48,5 +50,15 @@ class UsuarioController {
 		} catch (Exception $e){
 			echo 'Error al obtener usuario: ' . $e->getMessage();
 		}
+	}
+
+	public function logout(){
+		session_destroy();
+		Controlador::redirect("Sesion terminada");
+
+	}
+
+	public function home(){
+		require_once 'Vistas/Usuario/home.php';
 	}
 }
