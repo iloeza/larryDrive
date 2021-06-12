@@ -1,20 +1,3 @@
-function realizaProceso(valorCaja1, valorCaja2){
-        var parametros = {
-                "valorCaja1" : valorCaja1,
-                "valorCaja2" : valorCaja2
-        };
-        $.ajax({
-                data:  parametros,
-                url:   '?c=archivo&a=getarchivos&new_dir=carpeta1',
-                type:  'get',
-                beforeSend: function () {
-                        $("#resultado").html("Procesando, espere por favor...");
-                },
-                success:  function (response) {
-                        $("#resultado").html(response);
-                }
-        });
-}
 $(document).ready(function (e) {
  $("#subirArchivo").on('submit',(function(e) {
   e.preventDefault();
@@ -27,7 +10,7 @@ $(document).ready(function (e) {
   })
   .done(function(data) {
   	// view uploaded file.
-	$("#data").html(data);
+	$("#data").load("?c=usuario&a=home #data");
    })
   .fail(function(){
 
@@ -36,4 +19,49 @@ $(document).ready(function (e) {
 	//alert("Complete");
    });
  }));
+
+
+$("#crearDir").on('submit',(function(e) {
+  e.preventDefault();
+  $.ajax({
+   url: "?c=archivo&a=crearDirectorio",
+   type: "POST",
+   data: $(this).serialize()
+  })
+  .done(function(data) {
+  	// view uploaded file.
+	$("#data").load("?c=usuario&a=home #data");
+   })
+  .fail(function(){
+	alert("failed");
+   })
+   .always(function(){
+	//alert("Complete");
+   });
+ }));
 });
+$(document).on('click', '.getDir', (function (e) {
+
+	var dir = $(this).text();
+	var point = $(this).attr("point");
+	e.preventDefault();
+	$.ajax({
+	
+		url: "?c=archivo&a=actualizarRuta",
+		type: "POST",
+		data: {
+		dir: dir,
+		point: point	
+		}
+	})
+	.done(function(data) {
+	// view uploaded file.
+		$("#data").load("?c=usuario&a=home #data");
+	})
+	.fail(function(){
+		alert("failed");
+	})
+	.always(function(){
+		//alert("Complete");
+	});
+}));

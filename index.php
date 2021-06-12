@@ -8,11 +8,10 @@ $controller_request = isset($_REQUEST['c']) ? $_REQUEST['c'] : 'login';
 // Todo esta lógica hara el papel de un FrontController
 if($controller_request !== 'login') {
     // Obtenemos el controlador que queremos cargar
-    //$controller = strtolower($_REQUEST['c']);
     $accion = isset($_REQUEST['a']) ? $_REQUEST['a'] : 'Index';
     // Llama la accion
 	session_start();
-	if((isset($_SESSION['id']) && $_SESSION['id'] != '') || $controller_request == 'signin' || $accion == 'login' || $accion == 'crear'){
+	if(((isset($_SESSION['id']) && $_SESSION['id'] != '') || $controller_request == 'signin' || $accion == 'login' || $accion == 'crear') && $accion !== 'descargarArchivo'){
 
 		// Instanciamos el controlador
 		require_once "Controladores/{$controller_request}_controller.php";
@@ -21,6 +20,10 @@ if($controller_request !== 'login') {
 
     	call_user_func( array( $controller, $accion ) );
 
+	} else if($accion == 'descargarArchivo') {
+		require_once('descargar_archivo.php');
+		descargarArchivo();
+		exit(0);
 	} else {
 		Controlador::redirect("Necesitas loggearte para ver esta pagina");
 	}
