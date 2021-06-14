@@ -14,92 +14,44 @@ require_once 'Controladores/archivo_controller.php';
 	</ul>
 </nav>
 
-<div id="data">
-	<div class="container-fluid">
-		<div class="row">
-			<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-				<div class="sidebar-sticky pt-3">
-					<ul class="nav flex-column">
+<div class="container-fluid">
+	<div class="row">
+		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+			<div class="sidebar-sticky pt-3">
+				<ul class="nav flex-column">
+					<li class="nav-item">
+						<a type="button" class="nav-link text-success" id="showFiles">
+							<img src="Public/assets/filesicon.png" alt="" width="30" height="30">
+							Ver Archivos
+						</a>
+					</li>
+					<?php if ($_SESSION['isAdmin'] === 1) { ?>
 						<li class="nav-item">
-							<a type="button" class="nav-link text-success" data-toggle="modal" data-target="#crearDirModal">
-								<img src="Public/assets/foldericon.png" alt="" width="30" height="30">
-								Crear carpeta
+							<a type="button" id="admin" class="nav-link text-success">
+								<img src="Public/assets/admin.png" alt="" width="30" height="30">
+								Gestionar usuarios
 							</a>
 						</li>
-						<li class="nav-item">
-							<a type="button" class="nav-link text-success" data-toggle="modal" data-target="#subirArchivoModal">
-								<img src="Public/assets/archivoicon.png" alt="" width="30" height="30">
-								Subir archivo
-							</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-				<div class="pt-3 pb-2 mb-1 border-bottom">
-					<h1 class="h2">Dashboard</h1>
-					<?php
-					$archivos = new ArchivoController(); ?>
+					<?php } ?>
+				</ul>
+			</div>
+		</nav>
+		<main role="main" id="data" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+			<div class="pt-3 pb-2 mb-1 border-bottom">
+				<h1 class="h2">Dashboard</h1>
+				<?php if (isset($_SESSION['mostrarAdmin']) && $_SESSION['mostrarAdmin'] == false) {
+					require_once 'Vistas/Usuario/archivosUsuario.php';
+				} else {
+					require_once 'Vistas/Usuario/admin.php';
+				}
 
-					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb">
-							<?php $rutasActivas = empty($_SESSION['ruta']) ? false : true; ?>
-							<li class="breadcrumb-item <?php echo $rutasActivas ? "" : "active"; ?>"><span class="getDir" point="-1">Home</span></li>
-							<?php if ($rutasActivas !== "active") {
-								$point = 0; ?>
-								<?php foreach ($_SESSION['ruta'] as $ruta) { ?>
-									<li class="breadcrumb-item active"><span class="getDir" point=<?php echo $point; ?>><?php echo $ruta; ?></span></li>
-							<?php
-									$point++;
-								}
-							} ?>
-						</ol>
-					</nav>
-					<?php $archivosDir = $archivos->GetArchivos(); ?>
-				</div>
+				if (isset($_SESSION['mostrarAdmin'])) {
+					$_SESSION['mostrarAdmin'] = false;
+				}
 
-				<h1 class="h2">Carpetas</h1>
-				<div class="container">
-					<div class="row">
-						<?php if (empty($archivosDir['dirs'])) { ?>
-							<div class="col-12">
-								<div class="text-center">
-									<h4 class="text-secondary">Oops... Nada por aquí, nada por allá.</h4>
-								</div>
-							</div>
-							<?php } else {
+				?>
+		</main>
 
-							foreach ($archivosDir['dirs'] as $k => $v) { ?>
-								<div class="col-3">
-									<div class="text-center">
-										<img class="mb-4" src="Public/assets/folder.png" alt="" width="72" height="72">
-										<p class='getDir'><b><?php echo $v['NombreDir'] ?></b></p>
-									</div>
-								</div>
-						<?php }
-						} ?>
-					</div>
-				</div>
-
-				<h2>Archivos</h2>
-				<div class="table-responsive">
-					<table class="table table-striped table-sm">
-						<thead>
-							<tr>
-								<th>Nombre de archivos</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($archivosDir['files'] as $k => $v) { ?>
-								<tr>
-									<td><a href="<?php echo $v['Ruta'] ?>" download><?php echo $v['NombreArchivo'] ?></a></td>
-								</tr>
-							<?php } ?>
-						</tbody>
-					</table>
-				</div>
-			</main>
-		</div>
 	</div>
 </div>
 

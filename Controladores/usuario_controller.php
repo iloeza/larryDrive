@@ -38,8 +38,12 @@ class UsuarioController {
 			$qry = $this->usuario->get_usuario($get_usuario);
 			$info_usuario = $qry->fetch_assoc();
 			if ($info_usuario['password'] === $get_usuario->password){
-				//session_start();
 				$_SESSION['username'] = $info_usuario['username'];
+				$_SESSION['mostrarAdmin'] = "";
+				$_SESSION['isAdmin'] = $info_usuario['isAdmin'];
+				if ($_SESSION['isAdmin'] == 1){
+					$_SESSION['mostrarAdmin'] = false;
+				}
 				$_SESSION['id'] = $info_usuario['id'];
 				$_SESSION['ruta'] = [];
 				Controlador::redirect("Inicio de sesion correcto", "?c=usuario&a=home"); 
@@ -60,5 +64,41 @@ class UsuarioController {
 
 	public function home(){
 		require_once 'Vistas/Usuario/home.php';
+	}
+
+	public function adminHome(){
+		if (isset($_SESSION['mostrarAdmin'])){
+			$_SESSION['mostrarAdmin'] = true;
+		}
+	}
+
+	public function showArchivos(){
+		if (isset($_SESSION['mostrarAdmin'])){
+			$_SESSION['mostrarAdmin'] = false;
+		}
+	}
+
+	public function getUsuarios(){
+
+		try {
+			$resultado = array();
+			$qry = $this->usuario->get_usuarios();
+			while ($row = $qry->fetch_assoc()){
+				array_push($resultado, $row);
+			}
+			return $resultado;
+
+		} catch (Exception $e){
+			echo 'Error al obtener usuario: ' . $e->getMessage();
+		}
+	}
+
+	public function cambiarRol(){
+		$id = (isset($_POST['id']) && $_POST['id'] != "") ? $_POST['id'] : "";
+		$rol = (isset($_POST['rol']) && $_POST['rol'] != "") ? $_POST['rol'] : "";
+
+		if ($id != "" && $rol != ""){
+			$this->usuario->cambiar_rol($id, $rol);
+		}
 	}
 }

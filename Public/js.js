@@ -14,7 +14,7 @@ $(document).ready(function (e) {
 				// view uploaded file.
 				$('#subirArchivoModal').modal('hide');
 				$("#subirArchivo")[0].reset();
-				$("#data").load("?c=usuario&a=home #data");
+				$("#data").load("?c=usuario&a=home #data>*");
 			})
 			.fail(function () {
 
@@ -39,7 +39,7 @@ $(document).ready(function (e) {
 					errmsg.addClass('d-none');
 				}
 				$("#crearDir")[0].reset();
-				$("#data").load("?c=usuario&a=home #data");
+				$("#data").load("?c=usuario&a=home #data>*");
 
 			})
 			.fail(function (err) {
@@ -53,6 +53,7 @@ $(document).ready(function (e) {
 			});
 	}));
 });
+
 $(document).on('click', '.getDir', (function (e) {
 
 	var dir = $(this).text();
@@ -69,7 +70,75 @@ $(document).on('click', '.getDir', (function (e) {
 	})
 		.done(function (data) {
 			// view uploaded file.
-			$("#data").load("?c=usuario&a=home #data");
+			$("#data").load("?c=usuario&a=home #data>*");
+		})
+		.fail(function () {
+			alert("failed");
+		})
+		.always(function () {
+			//alert("Complete");
+		});
+}));
+
+$(document).on('click', '#admin', (function (e) {
+
+	e.preventDefault();
+	$.ajax({
+
+		url: "?c=usuario&a=adminhome",
+		type: "get"
+		//data: {vista: "admin"}
+	})
+		.done(function (data) {
+			// view uploaded file.
+			$("#data").load("?c=usuario&a=home #data>*");
+		})
+		.fail(function () {
+			alert("failed");
+		})
+		.always(function () {
+			//alert("Complete");
+		});
+}));
+
+$(document).on('click', '#showFiles', (function (e) {
+
+	e.preventDefault();
+	$.ajax({
+
+		url: "?c=usuario&a=showArchivos",
+		type: "get"
+	})
+		.done(function (data) {
+			// view uploaded file.
+			$("#data").load("?c=usuario&a=home #data>*");
+		})
+		.fail(function () {
+			alert("failed");
+		})
+		.always(function () {
+			//alert("Complete");
+		});
+}));
+
+$(document).on('click', '.cambiarRol', (function (e) {
+
+	var rol = $(this).attr("userRol");
+	var id = $(this).attr("userId");
+
+	e.preventDefault();
+	$.ajax({
+
+		url: "?c=usuario&a=cambiarRol",
+		type: "post",
+		data: {
+			rol: rol,
+			id: id
+		}
+	})
+		.done(function (data) {
+			alert("Usuario actualizado con exito");
+			$("#data").load("?c=usuario&a=home #data>*");
 		})
 		.fail(function () {
 			alert("failed");
